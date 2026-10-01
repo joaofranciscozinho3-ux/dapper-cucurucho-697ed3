@@ -1,0 +1,172 @@
+@import "tailwindcss" source("../");
+
+@theme {
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
+
+  --color-paper: #f6f1e7;
+  --color-paper-deep: #ebe2d0;
+  --color-card: #fffdf8;
+  --color-ink: #13231f;
+  --color-ink-soft: #4a5a54;
+  --color-moss: #1f4d3a;
+  --color-signal: #ff5b26;
+  --color-signal-deep: #e2451a;
+  --color-sun: #ffd23f;
+  --color-leaf: #9bd35a;
+  --color-line: #e0d6c3;
+  --color-danger: #c42f1c;
+}
+
+html {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+}
+
+/* Paper grain on a fixed, non-interactive layer */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.3 0 0 0 0 0.25 0 0 0 0 0.15 0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Buttons: always filled, never ghost ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding: 0 1.25rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1;
+  border: 2px solid var(--color-ink);
+  box-shadow: 0 3px 0 var(--color-ink);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.15s ease;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.btn:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 0 0 var(--color-ink);
+}
+.btn:focus-visible {
+  outline: 3px solid var(--color-sun);
+  outline-offset: 2px;
+}
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.btn-primary { background: var(--color-signal); color: var(--color-ink); }
+.btn-primary:hover:not(:disabled) { background: #ff6d3d; }
+.btn-dark { background: var(--color-ink); color: var(--color-paper); }
+.btn-dark:hover:not(:disabled) { background: var(--color-moss); }
+.btn-soft { background: var(--color-paper-deep); color: var(--color-ink); }
+.btn-soft:hover:not(:disabled) { background: #e2d7c1; }
+.btn-sun { background: var(--color-sun); color: var(--color-ink); }
+.btn-danger { background: var(--color-danger); color: #fff; }
+.btn-danger:hover:not(:disabled) { background: #a92614; }
+.btn-lg { min-height: 3.6rem; font-size: 1.1rem; padding: 0 1.6rem; }
+.btn-sm { min-height: 2.4rem; font-size: 0.9rem; padding: 0 0.95rem; box-shadow: 0 2px 0 var(--color-ink); }
+.btn-icon { width: 2.5rem; min-height: 2.5rem; padding: 0; box-shadow: 0 2px 0 var(--color-ink); }
+
+.field {
+  width: 100%;
+  border: 2px solid var(--color-ink);
+  border-radius: 1rem;
+  background: var(--color-card);
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
+  color: var(--color-ink);
+  outline: none;
+  transition: box-shadow 0.15s ease;
+}
+.field:focus { box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-sun) 70%, transparent); }
+.field::placeholder { color: #8b958f; }
+
+.card {
+  background: var(--color-card);
+  border: 2px solid var(--color-ink);
+  border-radius: 1.5rem;
+  box-shadow: 0 5px 0 var(--color-ink);
+}
+
+/* The "FEITO" rubber stamp on every action */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--color-moss);
+  border: 2px solid var(--color-moss);
+  border-radius: 0.4rem;
+  padding: 0.2rem 0.45rem;
+  transform: rotate(-4deg);
+  background: color-mix(in srgb, var(--color-leaf) 35%, transparent);
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--color-paper-deep) 0%, #f3ecdf 50%, var(--color-paper-deep) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.3s linear infinite;
+}
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+.rise { animation: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+@keyframes sheet-up { from { transform: translateY(100%); } to { transform: none; } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+.sheet { animation: sheet-up 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.backdrop { animation: fade-in 0.2s ease both; }
+
+.toast-stack {
+  position: fixed;
+  left: 50%;
+  top: max(1rem, env(safe-area-inset-top));
+  transform: translateX(-50%);
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: min(92vw, 26rem);
+}
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1rem;
+  border-radius: 1rem;
+  border: 2px solid var(--color-ink);
+  box-shadow: 0 4px 0 var(--color-ink);
+  font-weight: 700;
+  animation: rise 0.3s ease both;
+}
+.toast-success { background: var(--color-leaf); color: var(--color-ink); }
+.toast-error { background: var(--color-danger); color: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
